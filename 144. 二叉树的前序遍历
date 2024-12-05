@@ -1,0 +1,47 @@
+/* 
+二叉树的先序遍历规则：
+根节点 -》 左节点 -》 右节点
+**/
+
+https://leetcode.cn/problems/binary-tree-preorder-traversal/description/
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* preorderTraversal(struct TreeNode* root, int* returnSize) {
+    struct TreeNode* stack[200];
+    struct TreeNode* tmp = root;
+    int top = -1;
+    int *tree = malloc(sizeof(int)*100);
+    *returnSize = 0;
+    while(tmp != NULL || top != -1)
+    {
+        //循环遍历完tmp节点的左节点
+        while(tmp != NULL)
+        {
+            //存储当前节点的值
+            tree[(*returnSize)++] = tmp->val; 
+            //将当前节点入栈，便于后续找到这个节点，因为它的右节点的值还没有存储
+            stack[++top] = tmp;
+            //继续遍历该节点的左节点
+            tmp  = tmp->left;
+        }
+
+        //当栈不为空时，出栈，遍历其右节点
+        if(top != -1)
+        {
+            tmp = stack[top--];
+            tmp = tmp->right;
+        }
+    }
+
+    return tree;
+}
